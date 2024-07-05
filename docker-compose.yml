@@ -19,8 +19,6 @@ services:
     volumes:
         - rabbitmq_data:/var/lib/rabbitmq/
         - rabbitmq_logs:/var/log/rabbitmq
-    networks:
-        - rabbitmq_go_net
 volumes:
   rabbitmq_data:
   rabbitmq_logs:
