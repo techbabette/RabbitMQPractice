@@ -10,6 +10,12 @@ services:
     volumes:
       - ./publisher:/var/www/html
       - vendor:/var/www/html/vendor
+  subscriber:
+    build: ./subscriber
+    restart: unless-stopped
+    volumes:
+      - ./subscriber:/app
+      - /app/node_modules
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: 'rabbitmq'
@@ -23,3 +29,4 @@ volumes:
   rabbitmq_data:
   rabbitmq_logs:
   vendor:
+  node_modules:
