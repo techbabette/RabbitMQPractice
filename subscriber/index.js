@@ -8,16 +8,29 @@ amqp.connect('amqp://rabbitmq', function(error0, connection) {
       if (error1) {
         throw error1;
       }
-      var queue = 'hello';
-  
-      channel.assertQueue(queue, {
-        durable: false
+      var exchange = 'main_exchange';
+      var queue = "mail_queue"
+      var event = "mail_token"
+
+
+      channel.assertExchange(exchange, 'direct', {
+        durable : false
       });
 
-      console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
-      channel.consume(queue, handleHelloQueue, 
-      {
-          noAck: true
+      channel.assertQueue(queue, {
+        exclusive: true
+      }, function(error2, q){
+        if (error2){
+          throw error2;
+        }
+
+        console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
+
+        channel.bindQueue(q.queue, exchange, event)
+
+        channel.consume(q.queue, handleHelloQueue, {
+          noAck : true
+        });
       });
     });
   });

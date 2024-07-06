@@ -6,12 +6,22 @@ use PhpAmqpLib\Message\AMQPMessage;
 $connection = new AMQPStreamConnection('rabbitmq', 5672, 'guest', 'guest');
 $channel = $connection->channel();
 
-$channel->queue_declare('hello', false, false, false, false);
 
-$msg = new AMQPMessage('Hello World!');
-$channel->basic_publish($msg, '', 'hello');
+$event = "mail_token";
 
-echo " [x] Sent 'Hello World!'\n";
+$token = "123";
+$data = ["email" => "placeholder@mail.com", "token" => $token];
+$data = implode(" ", $data);
+
+$channel->exchange_declare("main_exchange", "direct", false, false, false);
+
+
+//$channel->queue_declare('hello', false, false, false, false);
+
+$msg = new AMQPMessage($data);
+$channel->basic_publish($msg, 'main_exchange', $event);
+
+echo " [x] Sent $event, $data\n";
 
 $channel->close();
 $connection->close();
