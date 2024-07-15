@@ -1,4 +1,21 @@
 var amqp = require('amqplib/callback_api');
+var nodemailer = require('nodemailer');
+
+let transporter = nodemailer.createTransport({
+  host: process.env.MAILHOST,
+  port: process.env.MAILPORT,
+  pool: true,
+
+  disableFileAccess: true,
+  disableUrlAccess: true,
+
+  auth: {
+    user: process.env.MAIL,
+    pass: process.env.MAILPASS
+  }
+}, {
+  from: process.env.MAIL
+})
 
 amqp.connect('amqp://rabbitmq', function(error0, connection) {
     if (error0) {
@@ -28,8 +45,25 @@ amqp.connect('amqp://rabbitmq', function(error0, connection) {
 
         channel.bindQueue(q.queue, exchange, event)
 
-        channel.consume(q.queue, handleHelloQueue, {
-          noAck : true
+        channel.consume(q.queue, data => {
+          let message = data.content.toString();
+          let mailOptions = {
+            to: process.env.RECIEVER,
+            text: message,
+            subject: "Message from nodemailer"
+          }
+
+          console.log(message);
+
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error){
+              console.log(error.stack)
+              return channel.nack(data);
+            }
+      
+            console.log("Delivered message", info.messageId);
+            channel.ack(data);
+          });
         });
       });
     });
