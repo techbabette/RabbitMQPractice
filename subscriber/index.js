@@ -31,15 +31,17 @@ amqp.connect('amqp://rabbitmq', function(error0, connection) {
 
 
       channel.assertExchange(exchange, 'direct', {
-        durable : false
+        durable : true
       });
 
       channel.assertQueue(queue, {
-        exclusive: true
+        exclusive: false
       }, function(error2, q){
         if (error2){
           throw error2;
         }
+
+        channel.prefetch(1);
 
         console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
 

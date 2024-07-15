@@ -13,8 +13,7 @@ $token = "123";
 $data = ["email" => "placeholder@mail.com", "token" => $token];
 $data = implode(" ", $data);
 
-$channel->exchange_declare("main_exchange", "direct", false, false, false);
-
+$channel->exchange_declare("main_exchange", "direct", false, true, false);
 
 //$channel->queue_declare('hello', false, false, false, false);
 
