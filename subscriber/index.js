@@ -36,5 +36,5 @@ amqp.connect('amqp://rabbitmq', function(error0, connection) {
   });
 
   function handleHelloQueue(message){
-    console.log(" [x] Received a message: %s", message.content.toString());
+    console.log(` [x] Received a message: ${message.content.toString()}, reading env email ${process.env.MAIL}`);
   }

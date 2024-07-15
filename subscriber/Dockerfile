@@ -1,7 +1,8 @@
-FROM node:18
+FROM node:20
 WORKDIR /app
 
-RUN npm install amqplib
-
 COPY . .
+
+RUN npm i
+
 CMD ["npm", "run", "start"] 

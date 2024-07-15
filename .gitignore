@@ -1,2 +1,3 @@
 publisher/vendor
 subscriber/node_modules
+*/.env

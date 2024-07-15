@@ -1,8 +1,9 @@
 {
     "scripts": {
-        "start": "node index.js"
+        "start": "node --env-file=.env index.js"
     },
     "dependencies": {
-        "amqplib": "^0.10.4"
+        "amqplib": "^0.10.4",
+        "nodemailer": "^6.9.14"
     }
 }
