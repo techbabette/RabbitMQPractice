@@ -14,7 +14,10 @@ services:
       rabbitmq:
         condition: service_healthy
   subscriber:
-    build: ./subscriber
+    build:
+      context: ./subscriber
+      args:
+        MQ: 'rabbitmq'
     restart: unless-stopped
     volumes:
       - ./subscriber:/app

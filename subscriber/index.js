@@ -17,7 +17,7 @@ let transporter = nodemailer.createTransport({
   from: process.env.MAIL
 })
 
-amqp.connect('amqp://rabbitmq', function(error0, connection) {
+amqp.connect(`amqp://${process.env.MQ}`, function(error0, connection) {
     if (error0) {
       throw error0;
     }
